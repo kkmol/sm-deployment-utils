@@ -2,7 +2,7 @@
 variable "service_name" {
   type        = string
   description = "Name of the SageMaker endpoint. Must be unique within account"
-  default     = "zarrp-clearscore"
+  default     = "zarrp-clearscore-pipeline"
 }
 
 variable "service_version" {

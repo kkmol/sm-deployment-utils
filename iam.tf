@@ -13,7 +13,6 @@ resource "aws_iam_role" "sagemaker_execution" {
   name               = "ZARRPSageMakerExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.sagemaker_assume_role.json
 
-  tags = local.common_tags
 }
 
 resource "aws_iam_role_policy_attachment" "sagemaker_execution" {
