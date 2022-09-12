@@ -17,5 +17,4 @@ resource "aws_sagemaker_endpoint" "endpoint" {
       }
     }
   }
-  tags = local.common_tags
 }

@@ -6,6 +6,4 @@ resource "aws_sagemaker_model" "model" {
     image          = "${var.ecr_clustering_byoc_image}@${var.ecr_clustering_byoc_image_hash}"
     model_data_url = "s3://${var.s3_model_artifact_bucket}/${var.s3_model_artifact_key}"
   }
-
-  tags = local.common_tags
 }

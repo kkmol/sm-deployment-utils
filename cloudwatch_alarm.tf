@@ -13,7 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "model_latency_average" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "model_latency_max" {
@@ -30,7 +30,7 @@ resource "aws_cloudwatch_metric_alarm" "model_latency_max" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "overhead_latency_average" {
@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "overhead_latency_average" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "overhead_latency_max" {
@@ -64,7 +64,7 @@ resource "aws_cloudwatch_metric_alarm" "overhead_latency_max" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "invocation_4xx_errors_average" {
@@ -81,7 +81,7 @@ resource "aws_cloudwatch_metric_alarm" "invocation_4xx_errors_average" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "invocation_5xx_errors" {
@@ -98,7 +98,7 @@ resource "aws_cloudwatch_metric_alarm" "invocation_5xx_errors" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 # resource "aws_cloudwatch_metric_alarm" "invocations" {
@@ -130,7 +130,7 @@ resource "aws_cloudwatch_metric_alarm" "invocation_5xx_errors" {
 #     }
 #   }
 
-#   tags = local.common_tags
+#   
 # }
 
 
@@ -149,7 +149,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_average" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_max" {
@@ -166,7 +166,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_max" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "disk_average" {
@@ -183,7 +183,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_average" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_average" {
@@ -200,5 +200,5 @@ resource "aws_cloudwatch_metric_alarm" "memory_average" {
   alarm_actions             = [var.sns_alarm_topic_arn]
   ok_actions                = [var.sns_alarm_topic_arn]
 
-  tags = local.common_tags
+  
 }

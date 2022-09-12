@@ -16,6 +16,4 @@ resource "aws_sagemaker_endpoint_configuration" "endpoint_config" {
   #   initial_sampling_percentage = var.data_capture_initial_sampling_percentage
   #   destination_s3_uri          = var.s3_data_capture_uri
   # }
-
-  tags = local.common_tags
 }
