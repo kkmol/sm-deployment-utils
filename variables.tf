@@ -1,9 +1,14 @@
 ### Model
-
-variable "model_name" {
+variable "service_name" {
   type        = string
   description = "Name of the SageMaker endpoint. Must be unique within account"
-  default     = "zarrp-confused"
+  default     = "zarrp-clearscore"
+}
+
+variable "service_version" {
+  type        = string
+  description = "Version of the Service?"
+  default     = "beta"
 }
 
 variable "ecr_clustering_byoc_image" {
@@ -21,13 +26,13 @@ variable "ecr_clustering_byoc_image_hash" {
 variable "s3_model_artifact_bucket" {
   type        = string
   description = "S3 bucket storing the model & data capture"
-  default     = "sagemaker-zuto"
+  default     = "zuto-agg-rep-rate-prediction"
 }
 
 variable "s3_model_artifact_key" {
   type        = string
   description = "S3 key to the `model.tar.gz` that will be served"
-  default     = "clearscore-train-2022-06-30-09-05-41-821/output/model.tar.gz"
+  default     = "training/clearscore-refi/zarrp-training-clearscore-2022-07-29-14-27-00-779/output/model.tar.gz"
 }
 
 
@@ -37,7 +42,7 @@ variable "s3_model_artifact_key" {
 variable "model_variant_name" {
   type        = string
   description = "Name of the model variant (used to track effects downstream)"
-  default     = "tf-test"
+  default     = "2022-07-29"
 }
 
 variable "instance_type" {
@@ -101,4 +106,44 @@ variable "blue_green_time_until_termination" {
   type        = number
   description = "value"
   default     = 300
+}
+
+## Endpoint Autoscaling Policy
+
+variable "autoscaling_enabled" {
+  type        = bool
+  description = "Enable Autoscaling of Endpoint instances flag"
+  default     = false
+}
+
+variable "autoscaling_policies" {
+  type = list(object({
+    metric      = string
+    targetValue = number
+  }))
+  description = "A list of autoscaling target tracking policies."
+  default = [{
+    metric      = "SageMakerVariantInvocationsPerInstance"
+    targetValue = 60
+  }]
+}
+
+variable "autoscaling_minimum_tasks" {
+  type        = number
+  description = "Minimum number of Endpoint instances"
+  default     = 1
+}
+
+variable "autoscaling_maximum_tasks" {
+  type        = number
+  description = "Maximum number of Endpoint instances"
+  default     = 3
+}
+
+
+variable "sns_alarm_topic_arn" {
+  type        = string
+  description = "ARN of SNS topic handling CloudWatch Alarms"
+  default     = "arn:aws:sns:eu-west-2:331753892299:ml-monitoring"
+
 }

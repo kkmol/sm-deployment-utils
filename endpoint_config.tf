@@ -1,5 +1,5 @@
 resource "aws_sagemaker_endpoint_configuration" "endpoint_config" {
-  name = "${var.model_name}-${local.current_datetime}"
+  name = var.service_name
 
   production_variants {
     variant_name           = var.model_variant_name

@@ -1,8 +1,8 @@
 locals {
   common_tags = {
-    project = "zarrp"
-    type    = "testing"
-    owner   = "kieran"
+    project   = "zarrp"
+    lifecycle = "testing"
+    owner     = "kieran"
   }
 
   current_timestamp = timestamp()

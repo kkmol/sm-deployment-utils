@@ -1,5 +1,5 @@
 resource "aws_sagemaker_model" "model" {
-  name               = "${var.model_name}-${local.current_datetime}"
+  name               = var.service_name
   execution_role_arn = aws_iam_role.sagemaker_execution.arn
 
   container {
