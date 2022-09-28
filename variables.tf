@@ -1,8 +1,7 @@
-### Model
 variable "service_name" {
   type        = string
   description = "Name of the SageMaker endpoint. Must be unique within account"
-  default     = "zarrp-clearscore-pipeline"
+  default     = "zarrp-clearscore-refi"
 }
 
 variable "service_version" {
@@ -11,16 +10,14 @@ variable "service_version" {
   default     = "beta"
 }
 
+### Model
+
+
 variable "ecr_clustering_byoc_image" {
   type        = string
   description = "ECR of SageMaker Clustering BYOC image"
-  default     = "525344447431.dkr.ecr.eu-west-2.amazonaws.com/zklearn-clustering-sagemaker"
-}
+  default     = "525344447431.dkr.ecr.eu-west-2.amazonaws.com/zklearn-clustering-sagemaker@sha256:3a1e25b9b13ba706cb0409b0f6b14cf583bed6af6072ee830c7ba4fa53251354"
 
-variable "ecr_clustering_byoc_image_hash" {
-  type        = string
-  description = "Hash of the desired SageMaker Clustering BYOC image version"
-  default     = "sha256:1826a70b53297c8664b188a99ee522b77bca3a00da391467d197635f383af7c4"
 }
 
 variable "s3_model_artifact_bucket" {
@@ -32,7 +29,7 @@ variable "s3_model_artifact_bucket" {
 variable "s3_model_artifact_key" {
   type        = string
   description = "S3 key to the `model.tar.gz` that will be served"
-  default     = "training/clearscore-refi/zarrp-training-clearscore-2022-07-29-14-27-00-779/output/model.tar.gz"
+  default     = "training/clearscore-refi/zarrp-clearscore-refi-20220822C-005-918727a6/output/model.tar.gz"
 }
 
 
@@ -42,7 +39,7 @@ variable "s3_model_artifact_key" {
 variable "model_variant_name" {
   type        = string
   description = "Name of the model variant (used to track effects downstream)"
-  default     = "2022-07-29"
+  default     = "csrefi-hpo-mae-20220823"
 }
 
 variable "instance_type" {
@@ -52,60 +49,21 @@ variable "instance_type" {
 }
 
 variable "initial_instance_count" {
-  type        = number
+  type        = string
   description = "Number of instances that are created"
   default     = 1
 }
 
-variable "data_capture_flag" {
-  type        = bool
-  description = "Flag to enable data capture"
-  default     = true
-}
-
-variable "data_capture_mode" {
+variable "initial_variant_weights" {
   type        = string
-  description = "Mode of data capture. Incoming data or outgoing data"
-  default     = "Input"
-}
-
-variable "data_capture_initial_sampling_percentage" {
-  type        = number
-  description = "Portion of data to capture. Between 0 and 100 %"
-  default     = 25
+  description = "Traffic Distribution among all of models specified"
+  default     = 1
 }
 
 variable "s3_data_capture_uri" {
   type        = string
   description = "S3 location where captured data is stored"
   default     = "s3://zuto-agg-rep-rate-prediction/_test_data_capture/"
-}
-
-
-### Endpoint 
-
-variable "traffic_routing_configuration_type" {
-  type        = string
-  description = "Traffic Rerouting Type"
-  default     = "ALL_AT_ONCE"
-}
-
-variable "traffic_routing_configuration_wait" {
-  type        = number
-  description = ""
-  default     = 100
-}
-
-variable "blue_green_max_execution" {
-  type        = number
-  description = ""
-  default     = 600
-}
-
-variable "blue_green_time_until_termination" {
-  type        = number
-  description = "value"
-  default     = 300
 }
 
 ## Endpoint Autoscaling Policy

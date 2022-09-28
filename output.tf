@@ -1,3 +1,3 @@
 output "invoke_url" {
-  value = aws_sagemaker_endpoint.endpoint.name
+  value = aws_cloudformation_stack.inference.name
 }

@@ -1,0 +1,155 @@
+{
+    "Parameters": {
+        "ServiceName": {
+            "Type": "String",
+            "Description": "Name that will be applied to all services"
+        },
+        "ModelAVariantName": {
+            "Type": "String",
+            "Description": "Variant name for model A"
+        },
+        "ModelAImage": {
+            "Type": "String",
+            "Description": "ECR of SageMaker Clustering BYOC image"
+        },
+        "ModelADataUrl": {
+            "Type": "String",
+            "Description": "S3 bucket and key storing the `model.tar.gz` that will be served"
+        },
+        "ModelBVariantName": {
+            "Type": "String",
+            "Description": "Variant name for model B"
+        },
+        "ModelBImage": {
+            "Type": "String",
+            "Description": "ECR of SageMaker Clustering BYOC image"
+        },
+        "ModelBDataUrl": {
+            "Type": "String",
+            "Description": "S3 bucket and key storing the `model.tar.gz` that will be served"
+        },
+        "ModelExecutionRole": {
+            "Type": "String",
+            "Description": "IAM Role with the ability to build sagemaker models & access S3"
+        },
+        "InstanceType": {
+            "Type": "String",
+            "Description": "Instance type that will be used"
+        },
+        "InitialInstanceCount": {
+            "Type": "Number",
+            "Description": "Number of instances to spin up"
+        },
+        "DataCaptureFlag": {
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Default": "false",
+            "Type": "String",
+            "Description": "Capture incoming requests or not"
+        },
+        "DataCaptureS3Uri": {
+            "Type": "String",
+            "Description": "S3 location to put the captured data"
+        },
+        "CreationDate" : {
+            "Type" : "String",
+            "Description" : "Date and time of creation"
+          }
+    },
+    "Resources": {
+        "ModelA": {
+            "Type": "AWS::SageMaker::Model",
+            "Properties": {
+                "ModelName": { "Fn::Sub": "${ServiceName}-model-a-${CreationDate}" },
+                "PrimaryContainer": 
+                    {
+                        "Image": { "Ref" : "ModelAImage" },
+                        "ModelDataUrl": { "Ref" : "ModelADataUrl" }
+                    },
+                "ExecutionRoleArn": {"Ref": "ModelExecutionRole" },
+                "EnableNetworkIsolation": true,
+                "Tags": [
+                    {"Key": "owner", "Value": "Data Squad"},
+                    {"Key": "lifecycle", "Value": "Operational"},
+                    {"Key": "service", "Value": "ZARRP"},
+                    {"Key": "date_created", "Value": { "Ref" : "CreationDate" }}
+                ]
+            }
+        },
+        "ModelB": {
+            "Type": "AWS::SageMaker::Model",
+            "Properties": {
+                "ModelName": { "Fn::Sub": "${ServiceName}-model-b-${CreationDate}" },
+                "PrimaryContainer":
+                    {
+                        "Image": { "Ref" : "ModelBImage" },
+                        "ModelDataUrl": { "Ref" : "ModelBDataUrl" }
+                    },
+                "ExecutionRoleArn": {"Ref": "ModelExecutionRole" },
+                "EnableNetworkIsolation": true,
+                "Tags": [
+                    {"Key": "owner", "Value": "Data Squad"},
+                    {"Key": "lifecycle", "Value": "Operational"},
+                    {"Key": "service", "Value": "ZARRP"},
+                    {"Key": "date_created", "Value": { "Ref" : "CreationDate" }}
+                ]
+            }
+        },
+        "EndpointConfig": {
+            "Type": "AWS::SageMaker::EndpointConfig",
+            "Properties": {
+                "EndpointConfigName": { "Fn::Sub": "${ServiceName}-endpoint-config-${CreationDate}" },
+                "ProductionVariants": [
+                    {
+                        "InitialInstanceCount": {"Ref": "InitialInstanceCount" },
+                        "InitialVariantWeight": 0.5,
+                        "InstanceType": {"Ref": "InstanceType" },
+                        "ModelName": { "Fn::Sub": "${ServiceName}-model-a-${CreationDate}" },
+                        "VariantName": {"Ref": "ModelAVariantName" }
+                    },
+                    {
+                        "InitialInstanceCount": {"Ref": "InitialInstanceCount" },
+                        "InitialVariantWeight": 0.5,
+                        "InstanceType": {"Ref": "InstanceType" },
+                        "ModelName": { "Fn::Sub": "${ServiceName}-model-b-${CreationDate}" },
+                        "VariantName": {"Ref": "ModelBVariantName" }
+                    }
+                ],
+                "DataCaptureConfig": {
+                    "EnableCapture": {"Ref": "DataCaptureFlag" },
+                    "CaptureOptions": [{"CaptureMode": "Input"}],
+                    "DestinationS3Uri": {"Ref": "DataCaptureS3Uri" },
+                    "InitialSamplingPercentage": 50
+                },
+                "Tags": [
+                    {"Key": "owner", "Value": "Data Squad"},
+                    {"Key": "lifecycle", "Value": "Operational"},
+                    {"Key": "service", "Value": "ZARRP"},
+                    {"Key": "date_created", "Value": { "Ref" : "CreationDate" }}
+                ]
+            },
+            "DependsOn": [
+                "ModelA",
+                "ModelB"
+            ]
+        },
+        "Endpoint": {
+            "Type": "AWS::SageMaker::Endpoint",
+            "Properties": {
+                "EndpointConfigName": { "Fn::Sub": "${ServiceName}-endpoint-config-${CreationDate}" },
+                "EndpointName": {"Ref": "ServiceName" },
+                "Tags": [
+                    {"Key": "owner", "Value": "Data Squad"},
+                    {"Key": "lifecycle", "Value": "Operational"},
+                    {"Key": "service", "Value": "ZARRP"},
+                    {"Key": "date_created", "Value": { "Ref" : "CreationDate" }}
+                ]
+            },
+            "DependsOn": [
+                "EndpointConfig"
+            ]
+        }
+    }
+}

@@ -1,6 +1,7 @@
 data "aws_iam_policy_document" "sagemaker_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
+    effect  = "Allow"
 
     principals {
       type        = "Service"
@@ -25,7 +26,7 @@ data "aws_iam_policy_document" "sagemaker_access" {
     actions = ["s3:*"]
     resources = [
       "arn:aws:s3:::${var.s3_model_artifact_bucket}",
-      "arn:aws:s3:::${var.s3_model_artifact_bucket}/*"
+      "arn:aws:s3:::${var.s3_model_artifact_bucket}/*",
     ]
   }
 }

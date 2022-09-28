@@ -2,7 +2,7 @@ locals {
   common_tags = {
     project   = "zarrp"
     lifecycle = "testing"
-    owner     = "kieran"
+    owner     = "data squad"
   }
 
   current_timestamp = timestamp()
